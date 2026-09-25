@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Монолитная скорая помощь — выезд бригады монолитчиков за 24 часа, Москва и область</title>
+<meta name="description" content="Специализированная бригада монолитчиков с прорабом-инженером. Срочное бетонирование, аварийное усиление конструкций, устранение дефектов монолита. Выезд прораба в течение 24 часов, мобилизация за 24–48 часов.">
+<!-- ДЕМО: закрыто от индексации. При переезде на боевой домен заменить на content="index, follow" -->
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Монолитная скорая помощь — выезд бригады за 24 часа">
+<meta property="og:description" content="Закрываем срывы сроков, устраняем дефекты бетонирования, выполняем аварийное усиление конструкций. Москва и область.">
+<meta property="og:locale" content="ru_RU">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2316191B'/%3E%3Crect x='5' y='14' width='22' height='4' fill='%23E6E7E3'/%3E%3Crect x='14' y='5' width='4' height='22' fill='%23C8102E'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============ ТОКЕНЫ ============
+   Палитра: ватман + чертёжная тушь + красный карандаш замечаний технадзора.
+   Один акцент (--mark), всё остальное — нейтраль. */
+:root{
+  --paper:#E6E7E3;
+  --paper-hi:#F1F2EF;
+  --ink:#16191B;
+  --ink-soft:#232A2E;
+  --steel:#545B60;
+  --steel-dim:#8A9096;
+  --mark:#C8102E;
+  --rule:rgba(22,25,27,.20);
+  --rule-soft:rgba(22,25,27,.10);
+  --rule-ondark:rgba(230,231,227,.18);
+
+  --s1:4px;  --s2:8px;  --s3:12px; --s4:16px; --s5:24px;
+  --s6:32px; --s7:48px; --s8:64px; --s9:96px;
+
+  --wrap:1240px;
+  --gutter:clamp(20px,4vw,48px);
+  --bandY:clamp(64px,8vw,116px);
+
+  --ease-out:cubic-bezier(.23,1,.32,1);
+  --lift:0 1px 1px rgba(22,25,27,.05), 0 10px 28px -12px rgba(22,25,27,.18);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font:400 17px/1.62 "Golos Text",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3{font-family:Oswald,"Golos Text",sans-serif; font-weight:500; margin:0; letter-spacing:-.005em}
+p{margin:0}
+a{color:inherit}
+ul{margin:0;padding:0;list-style:none}
+:focus-visible{outline:2px solid var(--mark); outline-offset:3px}
+.wrap{max-width:var(--wrap); margin:0 auto; padding-inline:var(--gutter)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* чертёжная подпись — только в штампе, размерных линиях и таблицах */
+.tag{font-family:Oswald,sans-serif;font-weight:500;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--steel)}
+
+/* ============ КНОПКИ ============ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  min-height:52px;padding:0 26px;border:0;border-radius:3px;cursor:pointer;
+  background:var(--mark);color:#fff;text-decoration:none;
+  font-family:Oswald,sans-serif;font-weight:500;font-size:16px;letter-spacing:.06em;text-transform:uppercase;
+  transition:background 160ms var(--ease-out), transform 140ms var(--ease-out);
+}
+.btn--sm{min-height:42px;padding:0 18px;font-size:13px}
+.btn:active{transform:scale(.98)}
+@media (hover:hover) and (pointer:fine){ .btn:hover{background:#A60D26} }
+
+/* ============ РАЗМЕРНАЯ ЛИНИЯ — главный приём страницы ============ */
+.dim{display:flex;align-items:center;color:var(--steel)}
+.dim__tick{flex:0 0 1px;height:15px;background:currentColor}
+.dim__line{flex:1;height:1px;background:currentColor;opacity:.42}
+.dim__val{
+  flex:0 1 auto;min-width:0;padding:0 14px;
+  font-family:Oswald,sans-serif;font-weight:500;font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink);
+}
+.dim--mark .dim__val{color:var(--mark)}
+.dim--dark{color:var(--steel-dim)}
+.dim--dark .dim__val{color:var(--paper)}
+/* единственный неинтерактивный момент движения на странице:
+   размерная линия «проставляется» при загрузке, как на чертеже */
+.dim--intro .dim__line{transform:scaleX(0);animation:dimDraw 760ms cubic-bezier(.16,1,.3,1) 220ms forwards}
+.dim--intro .dim__line:nth-child(2){transform-origin:right}
+.dim--intro .dim__line:nth-child(4){transform-origin:left}
+.dim--intro .dim__tick,.dim--intro .dim__val{opacity:0;animation:dimIn 400ms ease-out 900ms forwards}
+@keyframes dimDraw{to{transform:scaleX(1)}}
+@keyframes dimIn{to{opacity:1}}
+
+/* ============ ХЕДЕР ============ */
+.top{
+  position:sticky;top:0;z-index:30;background:rgba(230,231,227,.93);
+  backdrop-filter:saturate(1.2) blur(8px);
+  border-bottom:1px solid var(--rule);
+}
+.top__in{display:flex;align-items:center;gap:var(--s5);min-height:62px}
+.mark{display:flex;align-items:center;gap:10px;text-decoration:none;flex:0 0 auto}
+.mark__glyph{width:20px;height:20px;flex:0 0 auto}
+.mark__txt{font-family:Oswald,sans-serif;font-weight:600;font-size:14px;letter-spacing:.1em;text-transform:uppercase;line-height:1.15}
+.top__meta{margin-left:auto;display:flex;align-items:center;gap:var(--s5)}
+.top__phone{display:inline-flex;align-items:center;min-height:44px;font-family:Oswald,sans-serif;
+  font-weight:500;font-size:18px;text-decoration:none;white-space:nowrap}
+@media (max-width:900px){ .top__meta .tag{display:none} }
+@media (max-width:640px){ .top__phone{font-size:15px} .top .btn{display:none} }
+
+/* ============ 1. ПЕРВЫЙ ЭКРАН ============ */
+.hero{position:relative;padding:clamp(40px,5vw,72px) 0 clamp(40px,5vw,64px)}
+/* лист чертежа: рамка с полем подшивки слева (ГОСТ 2.104) + сетка ватмана внутри неё */
+.hero::before{
+  content:"";position:absolute;z-index:0;pointer-events:none;
+  inset:10px 10px 10px clamp(10px,2.2vw,26px);
+  border:1px solid var(--rule);
+  border-left-width:3px;
+  background-image:
+    linear-gradient(to right,var(--rule-soft) 1px,transparent 1px),
+    linear-gradient(to bottom,var(--rule-soft) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+.hero__in{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,300px);gap:clamp(32px,5vw,72px);align-items:start}
+.hero h1{font-size:clamp(36px,5.6vw,74px);line-height:1;letter-spacing:-.018em;max-width:15ch}
+.hero h1 span{display:block;text-wrap:balance}
+.hero__lead{margin-top:var(--s5);max-width:56ch;font-size:clamp(17px,1.4vw,19px);color:var(--steel)}
+.hero__cta{margin-top:clamp(28px,3.4vw,48px);display:flex;flex-wrap:wrap;align-items:center;gap:var(--s4) var(--s5)}
+.hero__note{font-size:14px;color:var(--steel);max-width:34ch;line-height:1.45}
+.hero__dim{position:relative;z-index:1;margin-top:clamp(40px,5vw,72px)}
+
+/* спецификация объекта — штамп данных на листе */
+.spec{border:1px solid var(--rule);background:var(--paper-hi);box-shadow:var(--lift)}
+.spec__row{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:var(--s3);padding:13px 16px;border-bottom:1px solid var(--rule-soft)}
+.spec__row:last-child{border-bottom:0}
+.spec__v{font-family:Oswald,sans-serif;font-weight:500;font-size:21px;line-height:1;white-space:nowrap}
+.spec__v--mark{color:var(--mark)}
+@media (max-width:920px){ .hero__in{grid-template-columns:1fr} }
+
+/* ============ СЕКЦИИ ============ */
+.band{padding-block:var(--bandY)}
+.band--hi{background:var(--paper-hi);border-block:1px solid var(--rule-soft)}
+.band--ink{background:var(--ink);color:var(--paper)}
+.band--ink .tag{color:var(--steel-dim)}
+h2{font-size:clamp(29px,3.8vw,50px);line-height:1.03;max-width:21ch;text-wrap:balance}
+.spec__v,.rate p.rate__p,.case__num,.crew__n,.cmp td{font-variant-numeric:tabular-nums}
+.h2sub{margin-top:var(--s4);max-width:52ch;color:var(--steel)}
+.band--ink .h2sub{color:#AEB4B8}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,5vw,80px);align-items:start}
+@media (min-width:901px){ .split > :first-child{position:sticky;top:96px} }
+@media (max-width:900px){ .split{grid-template-columns:1fr;gap:var(--s6)} }
+
+/* ============ 2. БОЛЬ ============ */
+.pains{margin-top:var(--s6);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(32px,5vw,72px)}
+.pain{display:grid;grid-template-columns:16px 1fr;gap:14px;padding:17px 0;border-top:1px solid var(--rule-soft)}
+.pain svg{width:14px;height:14px;margin-top:6px;color:var(--mark)}
+.pains--after{margin-top:var(--s5);max-width:52ch;color:var(--steel)}
+@media (max-width:760px){ .pains{grid-template-columns:1fr} }
+
+/* ============ 3. УСЛУГИ ============ */
+.svcs{margin-top:var(--s7);border-top:1px solid var(--rule)}
+.svc{position:relative;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,11fr);gap:clamp(18px,4vw,64px);
+  padding:clamp(22px,2.6vw,34px) 0;border-bottom:1px solid var(--rule)}
+.svc::before{content:"";position:absolute;left:-24px;top:0;bottom:0;width:3px;background:var(--mark);
+  transform:scaleY(0);transform-origin:top;transition:transform 200ms var(--ease-out)}
+.svc h3{font-size:clamp(21px,2.1vw,27px);line-height:1.12;max-width:19ch}
+.svc p{color:var(--steel);max-width:62ch}
+@media (hover:hover) and (pointer:fine){
+  .svc:hover::before{transform:scaleY(1)}
+  .svc:hover p{color:var(--ink-soft)}
+}
+@media (max-width:820px){ .svc{grid-template-columns:1fr;gap:var(--s3)} .svc::before{left:-14px} }
+
+/* ============ 4. СРАВНЕНИЕ ============ */
+.cmp{width:100%;margin-top:var(--s7);border-collapse:collapse;text-align:left}
+.cmp th,.cmp td{padding:15px 20px;border-bottom:1px solid var(--rule-ondark);vertical-align:top}
+.cmp thead th{font-family:Oswald,sans-serif;font-weight:500;font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--steel-dim);padding-bottom:11px}
+.cmp tbody th{font-weight:500;font-size:15px;color:#AEB4B8;width:26%}
+.cmp td{font-size:16px}
+.cmp .us{background:rgba(230,231,227,.05);font-weight:500}
+.cmp thead .us{color:var(--paper)}
+.cmp tr:last-child th,.cmp tr:last-child td{border-bottom:0}
+@media (max-width:760px){
+  .cmp,.cmp tbody,.cmp tr,.cmp td,.cmp th{display:block;width:auto}
+  .cmp thead{display:none}
+  .cmp tr{padding:16px 0;border-bottom:1px solid var(--rule-ondark)}
+  .cmp tbody th{width:auto;padding:0 0 9px;color:var(--steel-dim);font-family:Oswald,sans-serif;
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;border:0}
+  .cmp td{padding:0 0 5px;border:0;background:none}
+  .cmp td::before{content:attr(data-l) " — ";color:var(--steel-dim);font-size:14px}
+  .cmp td.us::before{color:#fff}
+}
+
+/* ============ 5. ПРОЦЕСС ============ */
+.flow{margin-top:var(--s7);display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.step{padding:var(--s5) clamp(16px,2vw,28px) 0 0;border-top:1px solid var(--rule)}
+.step:first-child{border-top-color:var(--ink)}
+.step p.step__t{margin-top:0;font-family:Oswald,sans-serif;font-weight:500;font-size:12px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--mark)}
+.step h3{margin-top:var(--s3);font-size:clamp(19px,1.8vw,23px);line-height:1.15}
+.step p{margin-top:10px;font-size:15.5px;line-height:1.55;color:var(--steel)}
+@media (max-width:900px){ .flow{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s5) 0} }
+@media (max-width:560px){ .flow{grid-template-columns:1fr} .step{padding-right:0} }
+
+/* ============ 6. КЕЙСЫ ============ */
+.cases{margin-top:var(--s7);border-top:1px solid var(--rule)}
+.case{display:grid;grid-template-columns:minmax(0,9fr) minmax(0,9fr) minmax(0,5fr);gap:clamp(18px,4vw,56px);
+  padding:clamp(24px,3vw,38px) 0;border-bottom:1px solid var(--rule);align-items:start}
+.case h3{font-size:clamp(20px,2vw,25px);line-height:1.15}
+.case > p{color:var(--steel)}
+.case__who{margin-top:9px;color:var(--steel);font-size:15px}
+.case__num{font-family:Oswald,sans-serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:.95;color:var(--mark)}
+.case__cap{margin-top:8px;font-size:14px;line-height:1.4;color:var(--steel)}
+@media (max-width:900px){ .case{grid-template-columns:1fr;gap:var(--s4)} }
+
+/* ============ 7. КОМАНДА ============ */
+.crew li{display:grid;grid-template-columns:74px 1fr;gap:var(--s4);padding:16px 0;border-top:1px solid var(--rule-soft)}
+.crew li:first-child{border-top:1px solid var(--rule)}
+.crew__n{font-family:Oswald,sans-serif;font-weight:500;font-size:20px;line-height:1.35;color:var(--mark)}
+.crew b{font-weight:500;font-family:Oswald,sans-serif;font-size:19px}
+.crew div span{display:block;color:var(--steel);font-size:16px;margin-top:2px}
+.crew__sum{margin-top:var(--s5);padding-top:var(--s4);border-top:1px solid var(--ink)}
+
+/* ============ 8. ЦЕНЫ ============ */
+.rates{margin-top:var(--s7);border-top:1px solid var(--rule)}
+.rate{display:grid;grid-template-columns:minmax(0,8fr) minmax(0,10fr) auto;gap:clamp(14px,3vw,48px);
+  align-items:baseline;padding:clamp(20px,2.4vw,30px) 0;border-bottom:1px solid var(--rule)}
+.rate h3{font-size:clamp(20px,2vw,25px)}
+.rate p{color:var(--steel);font-size:16px}
+.rate p.rate__p{font-family:Oswald,sans-serif;font-weight:500;font-size:clamp(20px,2.2vw,27px);
+  white-space:nowrap;text-align:right;color:var(--ink)}
+.rate__p small{display:block;font-family:"Golos Text",sans-serif;font-size:13px;font-weight:400;
+  color:var(--steel);margin-top:4px;white-space:normal}
+.surcharge{margin-top:var(--s5);display:flex;flex-wrap:wrap;gap:var(--s3) var(--s6);align-items:baseline}
+.surcharge b{font-family:Oswald,sans-serif;font-weight:500;color:var(--mark)}
+@media (max-width:820px){ .rate{grid-template-columns:1fr auto;gap:var(--s3) var(--s4)} .rate p{grid-column:1/-1} }
+
+/* ============ 9. ДОКУМЕНТЫ ============ */
+.docs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(32px,5vw,72px)}
+.docs li{display:grid;grid-template-columns:18px 1fr;gap:12px;padding:15px 0;border-top:1px solid var(--rule-soft)}
+.docs li:first-child,.docs li:nth-child(2){border-top:1px solid var(--rule)}
+.docs svg{width:15px;height:15px;margin-top:6px;color:var(--mark)}
+@media (max-width:760px){ .docs{grid-template-columns:1fr} .docs li:nth-child(2){border-top-color:var(--rule-soft)} }
+
+/* ============ 10. ЗАЯВКА ============ */
+#f{margin-top:clamp(28px,3.4vw,44px)}
+.f-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 var(--s5)}
+.field{display:block;margin-bottom:var(--s5)}
+.field > span{display:block;font-family:Oswald,sans-serif;font-weight:500;font-size:12px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--steel-dim);margin-bottom:7px}
+.field input,.field textarea,.field select{
+  width:100%;min-height:50px;padding:12px 14px;
+  font:400 16.5px/1.4 "Golos Text",sans-serif;color:var(--paper);
+  background:transparent;border:0;border-bottom:1px solid var(--rule-ondark);border-radius:0;
+  transition:border-color 160ms var(--ease-out), background 160ms var(--ease-out);
+}
+.field textarea{min-height:92px;resize:vertical}
+.field select{appearance:none;cursor:pointer;
+  background-image:linear-gradient(45deg,transparent 49%,var(--paper) 50%),linear-gradient(-45deg,transparent 49%,var(--paper) 50%);
+  background-size:7px 7px;background-position:right 16px center,right 9px center;background-repeat:no-repeat}
+.field select option{color:var(--ink)}
+.field input:focus,.field textarea:focus,.field select:focus{outline:0;border-bottom-color:var(--mark);background:rgba(230,231,227,.04)}
+.field input::placeholder,.field textarea::placeholder{color:#727A7F}
+.field input:user-invalid,.field textarea:user-invalid,.field select:user-invalid{border-bottom-color:var(--mark)}
+.consent{display:grid;grid-template-columns:22px 1fr;gap:12px;align-items:start;
+  margin:var(--s4) 0 var(--s6);font-size:14px;color:#AEB4B8;line-height:1.45}
+.consent input{width:22px;height:22px;margin:0;accent-color:var(--mark);cursor:pointer;flex:0 0 auto}
+.consent a{color:var(--paper)}
+.form__after{margin-top:var(--s4);font-size:14px;color:var(--steel-dim)}
+.contacts{border:1px solid var(--rule-ondark);padding:clamp(22px,3vw,34px)}
+.contacts__phone{display:flex;align-items:center;min-height:48px;margin-top:var(--s2);
+  font-family:Oswald,sans-serif;font-weight:500;
+  font-size:clamp(25px,3.1vw,36px);line-height:1.1;text-decoration:none}
+.contacts dl{margin:var(--s6) 0 0;display:grid;grid-template-columns:auto 1fr;gap:12px var(--s5);font-size:15px}
+.contacts dt{color:var(--steel-dim);font-family:Oswald,sans-serif;font-weight:400;font-size:12px;
+  letter-spacing:.14em;text-transform:uppercase;padding-top:3px}
+.contacts dd{margin:0}
+.ok{display:none;border:1px solid var(--mark);padding:clamp(22px,3vw,34px)}
+.ok h3{font-size:clamp(22px,2.4vw,30px)}
+.ok p{margin-top:var(--s3);color:#AEB4B8}
+.is-sent #f{display:none}
+.is-sent .ok{display:block}
+@media (max-width:620px){ .f-row{grid-template-columns:1fr} }
+
+/* ============ ШТАМП ЧЕРТЕЖА (футер) ============ */
+.stamp{background:var(--ink);color:var(--paper);padding-block:var(--s7)}
+.stamp__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--rule-ondark)}
+.stamp__cell{padding:15px 18px;border-right:1px solid var(--rule-ondark);border-bottom:1px solid var(--rule-ondark);min-height:80px}
+.stamp__cell:nth-child(3n){border-right:0}
+.stamp__cell:nth-last-child(-n+3){border-bottom:0}
+.stamp__cell b{display:block;margin-top:8px;font-family:Oswald,sans-serif;font-weight:500;font-size:17px}
+.stamp__foot{display:flex;flex-wrap:wrap;gap:var(--s3) var(--s5);justify-content:space-between;
+  margin-top:var(--s5);font-size:13.5px;color:var(--steel-dim)}
+.stamp__foot a{text-decoration-color:rgba(230,231,227,.3);text-underline-offset:3px;
+  transition:color 160ms var(--ease-out), text-decoration-color 160ms var(--ease-out)}
+.consent a{text-underline-offset:3px}
+@media (hover:hover) and (pointer:fine){
+  .stamp__foot a:hover{color:var(--paper);text-decoration-color:var(--paper)}
+  .top__phone:hover,.contacts__phone:hover{color:var(--mark)}
+}
+@media (max-width:760px){
+  .stamp__grid{grid-template-columns:1fr}
+  .stamp__cell{border-right:0;border-bottom:1px solid var(--rule-ondark);min-height:0}
+  .stamp__cell:last-child{border-bottom:0}
+}
+
+/* мобильная панель вызова */
+.callbar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:none;gap:1px;background:var(--rule);border-top:1px solid var(--rule)}
+.callbar a{flex:1;display:flex;align-items:center;justify-content:center;min-height:56px;
+  background:var(--paper-hi);text-decoration:none;
+  font-family:Oswald,sans-serif;font-weight:500;font-size:14px;letter-spacing:.08em;text-transform:uppercase}
+.callbar a+a{background:var(--mark);color:#fff}
+@media (max-width:640px){ .callbar{display:flex} body{padding-bottom:56px} }
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:1ms !important;animation-duration:1ms !important}
+}
+</style>
+</head>
+<body id="top">
+
+<svg hidden aria-hidden="true">
+  <symbol id="i-x" viewBox="0 0 16 16"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2.2" fill="none"/></symbol>
+  <symbol id="i-ok" viewBox="0 0 16 16"><path d="M2 8.6l4 4L14 3.4" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="square"/></symbol>
+</svg>
+
+<header class="top">
+  <div class="wrap top__in">
+    <a class="mark" href="#top" aria-label="Монолитная скорая помощь — наверх">
+      <svg class="mark__glyph" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" fill="#16191B"/><rect x="5" y="14" width="22" height="4" fill="#E6E7E3"/><rect x="14" y="5" width="4" height="22" fill="#C8102E"/></svg>
+      <span class="mark__txt">Монолитная<br>скорая</span>
+    </a>
+    <div class="top__meta">
+      <span class="tag">Москва и область · 24/7</span>
+      <!-- TODO 1/6 · телефон: поставить номер и href="tel:+7XXXXXXXXXX" -->
+      <a class="top__phone" href="#zayavka">+7 (___) ___-__-__</a>
+      <a class="btn btn--sm" href="#zayavka">Вызвать прораба</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===== 1. ПЕРВЫЙ ЭКРАН ===== -->
+  <section class="hero">
+    <div class="wrap hero__in">
+      <div>
+        <h1><span>Монолитная скорая помощь.</span><span>Выезд бригады за 24 часа.</span></h1>
+        <p class="hero__lead">Специализированная бригада монолитчиков с прорабом-инженером. Закрываем срывы сроков, устраняем дефекты бетонирования, выполняем аварийное усиление конструкций. Москва и область.</p>
+        <div class="hero__cta">
+          <a class="btn" href="#zayavka">Вызвать прораба на объект</a>
+          <p class="hero__note">Выезд и оценка — от 10 000 ₽. При заказе работ включаем в смету.</p>
+        </div>
+      </div>
+
+      <div class="spec">
+        <div class="spec__row"><span class="tag">Выезд прораба</span><span class="spec__v spec__v--mark">24 ч</span></div>
+        <div class="spec__row"><span class="tag">Мобилизация</span><span class="spec__v">24–48 ч</span></div>
+        <div class="spec__row"><span class="tag">Состав бригады</span><span class="spec__v">5–6 + прораб</span></div>
+        <div class="spec__row"><span class="tag">Гарантия на работы</span><span class="spec__v">12 мес</span></div>
+        <div class="spec__row"><span class="tag">Смены</span><span class="spec__v">день · ночь · вых.</span></div>
+      </div>
+    </div>
+
+    <div class="wrap hero__dim">
+      <div class="dim dim--mark dim--intro" aria-hidden="true">
+        <span class="dim__tick"></span><span class="dim__line"></span>
+        <span class="dim__val">от заявки до прораба на объекте — 24 часа</span>
+        <span class="dim__line"></span><span class="dim__tick"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 2. БОЛЬ КЛИЕНТА ===== -->
+  <section class="band">
+    <div class="wrap">
+      <h2>Знакомо?</h2>
+      <div class="pains">
+        <div class="pain"><svg aria-hidden="true"><use href="#i-x"/></svg><p>Субподрядчик слился за неделю до сдачи этажа.</p></div>
+        <div class="pain"><svg aria-hidden="true"><use href="#i-x"/></svg><p>Технадзор выявил раковины и отклонения по геометрии — надо переделывать.</p></div>
+        <div class="pain"><svg aria-hidden="true"><use href="#i-x"/></svg><p>Бетон привезли, а бригада не готова: опалубка не собрана, арматура не вязана.</p></div>
+        <div class="pain"><svg aria-hidden="true"><use href="#i-x"/></svg><p>Сроки горят, своих людей нет. Нанимать кого попало — риск усугубить.</p></div>
+        <div class="pain"><svg aria-hidden="true"><use href="#i-x"/></svg><p>Заливка ночью, в стеснённых условиях, в центре — нужны люди, которые умеют.</p></div>
+        <div class="pain"><svg aria-hidden="true"><use href="#i-x"/></svg><p>Аварийное состояние конструкции — нужна срочная оценка и усиление.</p></div>
+      </div>
+      <p class="pains--after">Если хоть один пункт ваш — вы по адресу. Мы заходим именно на такие задачи.</p>
+    </div>
+  </section>
+
+  <!-- ===== 3. УСЛУГИ ===== -->
+  <section class="band band--hi">
+    <div class="wrap">
+      <h2>Чем мы закрываем ваш объект</h2>
+      <div class="svcs">
+        <article class="svc">
+          <h3>Срочное бетонирование</h3>
+          <p>Фундаментные плиты, перекрытия, колонны, стены, лестницы. Мобилизация за 24–48 часов. Работаем сменами, включая ночь и выходные.</p>
+        </article>
+        <article class="svc">
+          <h3>Аварийное усиление конструкций</h3>
+          <p>Инъектирование трещин, торкретирование, восстановление защитного слоя, усиление углеволокном и металлоконструкциями.</p>
+        </article>
+        <article class="svc">
+          <h3>Устранение дефектов монолита</h3>
+          <p>Раковины, каверны, отклонения геометрии, недоливы. Приведение в соответствие проекту и СП 70.13330.</p>
+        </article>
+        <article class="svc">
+          <h3>Доделки и захватки</h3>
+          <p>Закрываем участки, которые не успевает основной подрядчик. Берём на себя ответственность за результат на своём фронте.</p>
+        </article>
+        <article class="svc">
+          <h3>Инженерный аудит</h3>
+          <p>Прораб-инженер выезжает, оценивает состояние конструкций, даёт заключение и план работ. Без воды.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 4. ПОЧЕМУ МЫ ===== -->
+  <section class="band band--ink">
+    <div class="wrap">
+      <h2>Мы не «бригада с Авито». Мы инженерный подрядчик.</h2>
+      <table class="cmp">
+        <caption class="sr">Сравнение обычной бригады и инженерного подрядчика по шести критериям</caption>
+        <thead>
+          <tr><th scope="col"><span class="sr">Критерий</span></th><th scope="col">Обычная бригада</th><th scope="col" class="us">Монолитная скорая</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Кто руководит</th><td data-l="Обычная бригада">Бригадир-практик</td><td class="us" data-l="У нас">Прораб-инженер, читает КЖ</td></tr>
+          <tr><th scope="row">Кто в составе</th><td data-l="Обычная бригада">Разнорабочие</td><td class="us" data-l="У нас">Арматурщики, бетонщики, опалубщики</td></tr>
+          <tr><th scope="row">Ответственность</th><td data-l="Обычная бригада">«Мы не виноваты»</td><td class="us" data-l="У нас">Договор, гарантия, акты</td></tr>
+          <tr><th scope="row">Документы</th><td data-l="Обычная бригада">Никаких</td><td class="us" data-l="У нас">Договор, смета, акты, гарантия 12 мес.</td></tr>
+          <tr><th scope="row">Скорость выхода</th><td data-l="Обычная бригада">1–2 недели</td><td class="us" data-l="У нас">24–48 часов</td></tr>
+          <tr><th scope="row">Контроль</th><td data-l="Обычная бригада">Со слов</td><td class="us" data-l="У нас">Ежедневный фотоотчёт, журнал работ</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== 5. ПРОЦЕСС ===== -->
+  <section class="band">
+    <div class="wrap">
+      <h2>От звонка до бетона — четыре шага</h2>
+      <div class="flow">
+        <div class="step">
+          <p class="step__t">Шаг 1 · сразу</p>
+          <h3>Заявка и фото</h3>
+          <p>Вы присылаете фото, объём, срок. Мы задаём 5–7 уточняющих вопросов.</p>
+        </div>
+        <div class="step">
+          <p class="step__t">Шаг 2 · 24 часа</p>
+          <h3>Выезд прораба</h3>
+          <p>Прораб на объекте в течение суток. Оценка, замеры, фотофиксация. От 10 000 ₽.</p>
+        </div>
+        <div class="step">
+          <p class="step__t">Шаг 3 · 3–4 часа</p>
+          <h3>Смета и график</h3>
+          <p>Смета, график, состав бригады. Фиксируем цену и сроки.</p>
+        </div>
+        <div class="step">
+          <p class="step__t">Шаг 4 · 24–48 часов</p>
+          <h3>Мобилизация</h3>
+          <p>Бригада на объекте. Работаем сменами, ежедневный отчёт, сдача по акту.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. КЕЙСЫ =====
+       ВНИМАНИЕ: клиент прислал этот блок как ШАБЛОН. До публикации заменить
+       на реальные объекты и цифры. Первый же вопрос генподрядчика
+       «дайте контакт этого заказчика» на вымышленном кейсе убивает сделку. -->
+  <section class="band band--hi">
+    <div class="wrap">
+      <h2>Как это выглядело на объектах</h2>
+      <div class="cases">
+        <article class="case">
+          <div>
+            <h3>Аварийная заливка перекрытия</h3>
+            <p class="case__who">БЦ в «Москва-Сити» · генподрядчик</p>
+          </div>
+          <p>Субподрядчик не вышел на заливку плиты 400 м², бетон заказан на следующий день. Вышли за 18 часов, залили за две смены.</p>
+          <div><p class="case__num">0 дней</p><p class="case__cap">сдвиг срока сдачи этажа</p></div>
+        </article>
+        <article class="case">
+          <div>
+            <h3>Устранение дефектов после технадзора</h3>
+            <p class="case__who">ЖК на западе Москвы · застройщик</p>
+          </div>
+          <p>Технадзор выявил раковины и отклонения на 12 колоннах. Вышли за 36 часов, устранили за пять смен.</p>
+          <div><p class="case__num">Без замечаний</p><p class="case__cap">акт подписан с первого предъявления</p></div>
+        </article>
+        <article class="case">
+          <div>
+            <h3>Усиление фундаментной плиты</h3>
+            <p class="case__who">Производственный объект · собственник</p>
+          </div>
+          <p>Трещины и просадка. Инженерный аудит, план усиления, работы за восемь смен.</p>
+          <div><p class="case__num">12 мес</p><p class="case__cap">гарантия на выполненное усиление</p></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 7. КОМАНДА ===== -->
+  <section class="band">
+    <div class="wrap split">
+      <div>
+        <h2>Кто приедет на ваш объект</h2>
+        <p class="h2sub">Все с опытом именно на монолите. Не «универсалы с рынка», которых собрали на смену по звонку.</p>
+      </div>
+      <div>
+        <ul class="crew">
+          <li><span class="crew__n">×1</span><div><b>Прораб-инженер</b><span>Опыт 10+ лет, читает КЖ, отвечает за технологию и допуски.</span></div></li>
+          <li><span class="crew__n">2–3</span><div><b>Арматурщики</b><span>Вязка каркасов по чертежам.</span></div></li>
+          <li><span class="crew__n">2–3</span><div><b>Бетонщики</b><span>Приём, укладка, уплотнение, уход за бетоном.</span></div></li>
+          <li><span class="crew__n">1–2</span><div><b>Опалубщики</b><span>Сборка и разборка опалубки, геометрия, раскрепление.</span></div></li>
+        </ul>
+        <p class="crew__sum">Итого на смену — <b>5–6 человек и прораб</b>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. ЦЕНЫ ===== -->
+  <section class="band band--hi">
+    <div class="wrap">
+      <h2>Форматы работы</h2>
+      <div class="rates">
+        <article class="rate">
+          <h3>Аварийный выезд</h3>
+          <p>Оценка, инженерный аудит, мелкие срочные работы.</p>
+          <p class="rate__p">от 10 000 ₽</p>
+        </article>
+        <article class="rate">
+          <h3>Усиление бригады</h3>
+          <p>5–6 человек и прораб на ваш фронт работ.</p>
+          <p class="rate__p">от 80 000 ₽<small>за смену, минимум 3 смены</small></p>
+        </article>
+        <article class="rate">
+          <h3>Закрытие участка под ключ</h3>
+          <p>Фиксированная цена за объём. Смета — после выезда прораба.</p>
+          <p class="rate__p">фикс по смете</p>
+        </article>
+        <article class="rate">
+          <h3>Вахта на объекте</h3>
+          <p>2–4 недели сменами, постоянное присутствие бригады.</p>
+          <p class="rate__p">расчёт под объект</p>
+        </article>
+      </div>
+      <p class="surcharge"><span class="tag">Наценки</span><span>Срочность 24–48 ч — <b>+30–50%</b></span><span>Ночь и выходные — <b>+20–40%</b></span></p>
+    </div>
+  </section>
+
+  <!-- ===== 9. ГАРАНТИИ И ДОКУМЕНТЫ ===== -->
+  <section class="band">
+    <div class="wrap split">
+      <div>
+        <h2>Работаем официально</h2>
+        <p class="h2sub">Всё, что нужно вашему сметному отделу и службе технадзора, оформляем как положено.</p>
+      </div>
+      <ul class="docs">
+        <li><svg aria-hidden="true"><use href="#i-ok"/></svg><span>Договор подряда с фиксацией сроков и ответственности</span></li>
+        <li><svg aria-hidden="true"><use href="#i-ok"/></svg><span>Смета и график — до начала работ</span></li>
+        <li><svg aria-hidden="true"><use href="#i-ok"/></svg><span>Акты выполненных работ, КС-2, КС-3</span></li>
+        <li><svg aria-hidden="true"><use href="#i-ok"/></svg><span>Гарантия на работы — 12 месяцев</span></li>
+        <li><svg aria-hidden="true"><use href="#i-ok"/></svg><span>Ежедневный фотоотчёт и журнал работ</span></li>
+        <li><svg aria-hidden="true"><use href="#i-ok"/></svg><span>Работаем с НДС и без</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== 10. ЗАЯВКА ===== -->
+  <section class="band band--ink" id="zayavka">
+    <div class="wrap">
+      <div class="dim dim--dark" aria-hidden="true" style="margin-bottom:var(--s7)">
+        <span class="dim__tick"></span><span class="dim__line"></span>
+        <span class="dim__val">перезвоним в течение 15 минут</span>
+        <span class="dim__line"></span><span class="dim__tick"></span>
+      </div>
+      <div class="split">
+        <div>
+          <h2>Опишите задачу</h2>
+          <p class="h2sub">Чем конкретнее объём и срок, тем точнее прораб посчитает на выезде. Куда прислать фото и чертежи — скажем при звонке.</p>
+
+          <!-- ФОРМА НЕ ПОДКЛЮЧЕНА К ПОЧТЕ.
+               Подключение: <form action="https://formspree.io/f/XXXX" method="post"> + убрать
+               e.preventDefault() в скрипте ниже. Либо свой send.php / n8n-вебхук.
+               Пока кнопка только показывает экран «Заявка принята». -->
+          <form id="f" novalidate>
+            <div class="f-row">
+              <label class="field"><span>Имя</span><input name="name" type="text" autocomplete="name" placeholder="Как к вам обращаться" required></label>
+              <label class="field"><span>Телефон</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 ___ ___-__-__" required></label>
+            </div>
+            <label class="field"><span>Объект — адрес или район</span><input name="site" type="text" placeholder="Например: Одинцово, ЖК на Молодёжной" required></label>
+            <label class="field"><span>Что случилось</span><textarea name="task" placeholder="Плита 400 м², субподрядчик не вышел, бетон заказан на четверг" required></textarea></label>
+            <label class="field"><span>Когда нужны люди</span>
+              <select name="when" required>
+                <option value="">Выберите срок</option>
+                <option>Сегодня</option>
+                <option>Завтра</option>
+                <option>В течение недели</option>
+              </select>
+            </label>
+            <label class="consent">
+              <input type="checkbox" name="consent" required>
+              <span>Согласен на обработку персональных данных согласно <a href="#">политике конфиденциальности</a>.</span>
+            </label>
+            <button class="btn" type="submit">Вызвать прораба</button>
+            <p class="form__after">Или позвоните — линия работает круглосуточно, включая выходные.</p>
+          </form>
+
+          <div class="ok" role="status">
+            <h3>Заявка принята</h3>
+            <p>Перезвоним в течение 15 минут. Если горит — звоните напрямую, линия работает круглосуточно.</p>
+          </div>
+        </div>
+
+        <div class="contacts">
+          <span class="tag">Круглосуточно, 7 дней в неделю</span>
+          <!-- TODO 2/6 · телефон -->
+          <a class="contacts__phone" href="#f">+7 (___) ___-__-__</a>
+          <dl>
+            <dt>Почта</dt><dd><!-- TODO 3/6 -->info@—.ru</dd>
+            <dt>Регион</dt><dd>Москва и Московская область</dd>
+            <dt>Выезд</dt><dd>В течение 24 часов после заявки</dd>
+            <dt>Мобилизация</dt><dd>Бригада на объекте через 24–48 часов</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ===== ШТАМП ЧЕРТЕЖА ВМЕСТО ФУТЕРА ===== -->
+<footer class="stamp">
+  <div class="wrap">
+    <div class="stamp__grid">
+      <div class="stamp__cell"><span class="tag">Организация</span><b><!-- TODO 4/6 -->ООО «———»</b></div>
+      <div class="stamp__cell"><span class="tag">Телефон</span><b><!-- TODO 5/6 -->+7 (___) ___-__-__</b></div>
+      <div class="stamp__cell"><span class="tag">Почта</span><b>info@—.ru</b></div>
+      <div class="stamp__cell"><span class="tag">ИНН / ОГРН</span><b><!-- TODO 6/6 -->— / —</b></div>
+      <div class="stamp__cell"><span class="tag">Регион работ</span><b>Москва и область</b></div>
+      <div class="stamp__cell"><span class="tag">Режим</span><b>24/7, включая выходные</b></div>
+    </div>
+    <div class="stamp__foot">
+      <span>© 2026 Монолитная скорая помощь. Не является публичной офертой.</span>
+      <a href="#">Политика обработки персональных данных</a>
+    </div>
+  </div>
+</footer>
+
+<nav class="callbar" aria-label="Быстрая связь">
+  <a href="#zayavka">Описать задачу</a>
+  <a href="#zayavka">Позвонить</a>
+</nav>
+
+<script>
+/* Единственный скрипт на странице — отправка формы.
+   Бэкенда пока нет: показываем экран «принято» и пишем данные в консоль. */
+(function(){
+  var f = document.getElementById('f');
+  if (!f) return;
+  f.addEventListener('submit', function(e){
+    e.preventDefault();
+    if (!f.checkValidity()) { f.reportValidity(); return; }
+    console.warn('Форма не подключена к бэкенду. Данные заявки:', Object.fromEntries(new FormData(f)));
+    var box = document.getElementById('zayavka');
+    box.classList.add('is-sent');
+    box.querySelector('.ok').scrollIntoView({block:'center', behavior:'smooth'});
+  });
+})();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"GeneralContractor",
+  "name":"Монолитная скорая помощь",
+  "description":"Бригада монолитчиков с прорабом-инженером: срочное бетонирование, аварийное усиление конструкций, устранение дефектов монолита. Выезд за 24 часа.",
+  "areaServed":{"@type":"AdministrativeArea","name":"Москва и Московская область"},
+  "openingHoursSpecification":{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],"opens":"00:00","closes":"23:59"}
+}
+</script>
+</body>
+</html>
