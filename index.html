@@ -3,8 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Монолитная скорая помощь — выезд бригады монолитчиков за 24 часа, Москва и область</title>
-<meta name="description" content="Специализированная бригада монолитчиков с прорабом-инженером. Срочное бетонирование, аварийное усиление конструкций, устранение дефектов монолита. Выезд прораба в течение 24 часов, мобилизация за 24–48 часов.">
+<title>Монолитная скорая помощь — выезд бригады за 24 часа, Москва</title>
+<meta name="description" content="Бригада монолитчиков с прорабом-инженером: срочное бетонирование, аварийное усиление, устранение дефектов монолита. Выезд за 24 часа, Москва и МО.">
+
+<!-- ЗАГЛУШКИ ПЕРЕД БОЕВЫМ ЗАПУСКОМ — 11 штук, ищутся по «TODO-»:
+     TODO-1  телефон в шапке (+ href="tel:")        TODO-7  почта в штампе
+     TODO-2  телефон в блоке контактов              TODO-8  ИНН / ОГРН в штампе
+     TODO-3  почта в блоке контактов                TODO-9  ссылка на политику ПДн в форме
+     TODO-4  action формы (сейчас писем не шлёт)    TODO-10 ссылка на политику ПДн в футере
+     TODO-5  телефон в штампе                       TODO-11 кнопка «Позвонить» в мобильной панели
+     TODO-6  название юрлица в штампе
+     Отдельно: meta robots ниже — вернуть index,follow при переезде на домен,
+     и добавить og:image, иначе ссылка в мессенджере уйдёт голым текстом. -->
 <!-- ДЕМО: закрыто от индексации. При переезде на боевой домен заменить на content="index, follow" -->
 <meta name="robots" content="noindex, nofollow">
 <meta property="og:type" content="website">
@@ -31,8 +41,7 @@
   --rule-soft:rgba(22,25,27,.10);
   --rule-ondark:rgba(230,231,227,.18);
 
-  --s1:4px;  --s2:8px;  --s3:12px; --s4:16px; --s5:24px;
-  --s6:32px; --s7:48px; --s8:64px; --s9:96px;
+  --s2:8px;  --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px;
 
   --wrap:1240px;
   --gutter:clamp(20px,4vw,48px);
@@ -47,8 +56,9 @@ body{
   margin:0; background:var(--paper); color:var(--ink);
   font:400 17px/1.62 "Golos Text",system-ui,sans-serif;
   -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
 }
+/* overflow-x:hidden намеренно НЕ ставим: он бы молча обрезал будущие
+   переполнения и сделал проверку «горизонтального скролла нет» бессмысленной */
 h1,h2,h3{font-family:Oswald,"Golos Text",sans-serif; font-weight:500; margin:0; letter-spacing:-.005em}
 p{margin:0}
 a{color:inherit}
@@ -165,7 +175,7 @@ h2{font-size:clamp(29px,3.8vw,50px);line-height:1.03;max-width:21ch;text-wrap:ba
 .svc::before{content:"";position:absolute;left:-24px;top:0;bottom:0;width:3px;background:var(--mark);
   transform:scaleY(0);transform-origin:top;transition:transform 200ms var(--ease-out)}
 .svc h3{font-size:clamp(21px,2.1vw,27px);line-height:1.12;max-width:19ch}
-.svc p{color:var(--steel);max-width:62ch}
+.svc p{color:var(--steel);max-width:62ch;transition:color 200ms var(--ease-out)}
 @media (hover:hover) and (pointer:fine){
   .svc:hover::before{transform:scaleY(1)}
   .svc:hover p{color:var(--ink-soft)}
@@ -186,9 +196,9 @@ h2{font-size:clamp(29px,3.8vw,50px);line-height:1.03;max-width:21ch;text-wrap:ba
   .cmp,.cmp tbody,.cmp tr,.cmp td,.cmp th{display:block;width:auto}
   .cmp thead{display:none}
   .cmp tr{padding:16px 0;border-bottom:1px solid var(--rule-ondark)}
-  .cmp tbody th{width:auto;padding:0 0 9px;color:var(--steel-dim);font-family:Oswald,sans-serif;
+  .cmp tbody th{padding:0 0 9px;color:var(--steel-dim);font-family:Oswald,sans-serif;
     font-size:12px;letter-spacing:.14em;text-transform:uppercase;border:0}
-  .cmp td{padding:0 0 5px;border:0;background:none}
+  .cmp td,.cmp td.us{padding:0 0 5px;border:0;background:none}
   .cmp td::before{content:attr(data-l) " — ";color:var(--steel-dim);font-size:14px}
   .cmp td.us::before{color:#fff}
 }
@@ -201,6 +211,7 @@ h2{font-size:clamp(29px,3.8vw,50px);line-height:1.03;max-width:21ch;text-wrap:ba
   text-transform:uppercase;color:var(--mark)}
 .step h3{margin-top:var(--s3);font-size:clamp(19px,1.8vw,23px);line-height:1.15}
 .step p{margin-top:10px;font-size:15.5px;line-height:1.55;color:var(--steel)}
+.step p.step__t{line-height:1.3}
 @media (max-width:900px){ .flow{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s5) 0} }
 @media (max-width:560px){ .flow{grid-template-columns:1fr} .step{padding-right:0} }
 
@@ -222,6 +233,7 @@ h2{font-size:clamp(29px,3.8vw,50px);line-height:1.03;max-width:21ch;text-wrap:ba
 .crew b{font-weight:500;font-family:Oswald,sans-serif;font-size:19px}
 .crew div span{display:block;color:var(--steel);font-size:16px;margin-top:2px}
 .crew__sum{margin-top:var(--s5);padding-top:var(--s4);border-top:1px solid var(--ink)}
+.crew__sum b{font-family:Oswald,sans-serif;font-weight:500;font-size:19px}
 
 /* ============ 8. ЦЕНЫ ============ */
 .rates{margin-top:var(--s7);border-top:1px solid var(--rule)}
@@ -235,7 +247,12 @@ h2{font-size:clamp(29px,3.8vw,50px);line-height:1.03;max-width:21ch;text-wrap:ba
   color:var(--steel);margin-top:4px;white-space:normal}
 .surcharge{margin-top:var(--s5);display:flex;flex-wrap:wrap;gap:var(--s3) var(--s6);align-items:baseline}
 .surcharge b{font-family:Oswald,sans-serif;font-weight:500;color:var(--mark)}
-@media (max-width:820px){ .rate{grid-template-columns:1fr auto;gap:var(--s3) var(--s4)} .rate p{grid-column:1/-1} }
+@media (max-width:820px){
+  .rate{grid-template-columns:1fr auto;gap:var(--s3) var(--s4)}
+  /* на всю ширину уезжает только описание; цена остаётся во второй колонке рядом с h3 */
+  .rate > p:not(.rate__p){grid-column:1/-1}
+  .rate p.rate__p{grid-column:2;grid-row:1}
+}
 
 /* ============ 9. ДОКУМЕНТЫ ============ */
 .docs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(32px,5vw,72px)}
@@ -261,9 +278,14 @@ h2{font-size:clamp(29px,3.8vw,50px);line-height:1.03;max-width:21ch;text-wrap:ba
   background-image:linear-gradient(45deg,transparent 49%,var(--paper) 50%),linear-gradient(-45deg,transparent 49%,var(--paper) 50%);
   background-size:7px 7px;background-position:right 16px center,right 9px center;background-repeat:no-repeat}
 .field select option{color:var(--ink)}
-.field input:focus,.field textarea:focus,.field select:focus{outline:0;border-bottom-color:var(--mark);background:rgba(230,231,227,.04)}
-.field input::placeholder,.field textarea::placeholder{color:#727A7F}
-.field input:user-invalid,.field textarea:user-invalid,.field select:user-invalid{border-bottom-color:var(--mark)}
+/* видимое кольцо у полей: раньше outline:0 убивал глобальный :focus-visible,
+   и единственным признаком фокуса оставалась линия 1px (контраст 3.0:1) */
+.field :is(input,textarea,select):focus{border-bottom-color:var(--paper);background:rgba(230,231,227,.04)}
+.field :is(input,textarea,select):focus:not(:focus-visible){outline:0}
+.field :is(input,textarea,select):focus-visible{outline:2px solid var(--mark);outline-offset:2px}
+.field input::placeholder,.field textarea::placeholder{color:var(--steel-dim)}
+/* ошибка отличается от фокуса толщиной линии, а не только цветом */
+.field :is(input,textarea,select):user-invalid{border-bottom-width:2px;border-bottom-color:var(--mark)}
 .consent{display:grid;grid-template-columns:22px 1fr;gap:12px;align-items:start;
   margin:var(--s4) 0 var(--s6);font-size:14px;color:#AEB4B8;line-height:1.45}
 .consent input{width:22px;height:22px;margin:0;accent-color:var(--mark);cursor:pointer;flex:0 0 auto}
@@ -302,7 +324,9 @@ h2{font-size:clamp(29px,3.8vw,50px);line-height:1.03;max-width:21ch;text-wrap:ba
 }
 @media (max-width:760px){
   .stamp__grid{grid-template-columns:1fr}
-  .stamp__cell{border-right:0;border-bottom:1px solid var(--rule-ondark);min-height:0}
+  /* вес селектора должен совпадать с .stamp__cell:nth-last-child(-n+3) выше,
+     иначе разлиновка пропадает у трёх последних ячеек — а разлиновка тут и есть приём */
+  .stamp__cell,.stamp__cell:nth-last-child(-n+3){border-right:0;border-bottom:1px solid var(--rule-ondark);min-height:0}
   .stamp__cell:last-child{border-bottom:0}
 }
 
@@ -322,7 +346,9 @@ h2{font-size:clamp(29px,3.8vw,50px);line-height:1.03;max-width:21ch;text-wrap:ba
 </head>
 <body id="top">
 
-<svg hidden aria-hidden="true">
+<!-- style="display:none" обязательно: атрибут hidden на <svg> не работает,
+     UA-правило [hidden]{display:none} до SVG-элемента не достаёт -->
+<svg style="display:none" aria-hidden="true">
   <symbol id="i-x" viewBox="0 0 16 16"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2.2" fill="none"/></symbol>
   <symbol id="i-ok" viewBox="0 0 16 16"><path d="M2 8.6l4 4L14 3.4" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="square"/></symbol>
 </svg>
@@ -335,7 +361,7 @@ h2{font-size:clamp(29px,3.8vw,50px);line-height:1.03;max-width:21ch;text-wrap:ba
     </a>
     <div class="top__meta">
       <span class="tag">Москва и область · 24/7</span>
-      <!-- TODO 1/6 · телефон: поставить номер и href="tel:+7XXXXXXXXXX" -->
+      <!-- TODO-1 · телефон в шапке: номер + href="tel:+7XXXXXXXXXX" -->
       <a class="top__phone" href="#zayavka">+7 (___) ___-__-__</a>
       <a class="btn btn--sm" href="#zayavka">Вызвать прораба</a>
     </div>
@@ -378,14 +404,14 @@ h2{font-size:clamp(29px,3.8vw,50px);line-height:1.03;max-width:21ch;text-wrap:ba
   <section class="band">
     <div class="wrap">
       <h2>Знакомо?</h2>
-      <div class="pains">
-        <div class="pain"><svg aria-hidden="true"><use href="#i-x"/></svg><p>Субподрядчик слился за неделю до сдачи этажа.</p></div>
-        <div class="pain"><svg aria-hidden="true"><use href="#i-x"/></svg><p>Технадзор выявил раковины и отклонения по геометрии — надо переделывать.</p></div>
-        <div class="pain"><svg aria-hidden="true"><use href="#i-x"/></svg><p>Бетон привезли, а бригада не готова: опалубка не собрана, арматура не вязана.</p></div>
-        <div class="pain"><svg aria-hidden="true"><use href="#i-x"/></svg><p>Сроки горят, своих людей нет. Нанимать кого попало — риск усугубить.</p></div>
-        <div class="pain"><svg aria-hidden="true"><use href="#i-x"/></svg><p>Заливка ночью, в стеснённых условиях, в центре — нужны люди, которые умеют.</p></div>
-        <div class="pain"><svg aria-hidden="true"><use href="#i-x"/></svg><p>Аварийное состояние конструкции — нужна срочная оценка и усиление.</p></div>
-      </div>
+      <ul class="pains">
+        <li class="pain"><svg aria-hidden="true"><use href="#i-x"/></svg><p>Субподрядчик слился за неделю до сдачи этажа.</p></li>
+        <li class="pain"><svg aria-hidden="true"><use href="#i-x"/></svg><p>Технадзор выявил раковины и отклонения по геометрии — надо переделывать.</p></li>
+        <li class="pain"><svg aria-hidden="true"><use href="#i-x"/></svg><p>Бетон привезли, а бригада не готова: опалубка не собрана, арматура не вязана.</p></li>
+        <li class="pain"><svg aria-hidden="true"><use href="#i-x"/></svg><p>Сроки горят, своих людей нет. Нанимать кого попало — риск усугубить.</p></li>
+        <li class="pain"><svg aria-hidden="true"><use href="#i-x"/></svg><p>Заливка ночью, в стеснённых условиях, в центре — нужны люди, которые умеют.</p></li>
+        <li class="pain"><svg aria-hidden="true"><use href="#i-x"/></svg><p>Аварийное состояние конструкции — нужна срочная оценка и усиление.</p></li>
+      </ul>
       <p class="pains--after">Если хоть один пункт ваш — вы по адресу. Мы заходим именно на такие задачи.</p>
     </div>
   </section>
@@ -589,6 +615,7 @@ h2{font-size:clamp(29px,3.8vw,50px);line-height:1.03;max-width:21ch;text-wrap:ba
                Подключение: <form action="https://formspree.io/f/XXXX" method="post"> + убрать
                e.preventDefault() в скрипте ниже. Либо свой send.php / n8n-вебхук.
                Пока кнопка только показывает экран «Заявка принята». -->
+          <!-- TODO-4 · action формы -->
           <form id="f" novalidate>
             <div class="f-row">
               <label class="field"><span>Имя</span><input name="name" type="text" autocomplete="name" placeholder="Как к вам обращаться" required></label>
@@ -606,13 +633,13 @@ h2{font-size:clamp(29px,3.8vw,50px);line-height:1.03;max-width:21ch;text-wrap:ba
             </label>
             <label class="consent">
               <input type="checkbox" name="consent" required>
-              <span>Согласен на обработку персональных данных согласно <a href="#">политике конфиденциальности</a>.</span>
+              <span>Согласен на обработку персональных данных согласно <a href="#"><!-- TODO-9 -->политике конфиденциальности</a>.</span>
             </label>
             <button class="btn" type="submit">Вызвать прораба</button>
             <p class="form__after">Или позвоните — линия работает круглосуточно, включая выходные.</p>
           </form>
 
-          <div class="ok" role="status">
+          <div class="ok" role="status" aria-live="polite" tabindex="-1">
             <h3>Заявка принята</h3>
             <p>Перезвоним в течение 15 минут. Если горит — звоните напрямую, линия работает круглосуточно.</p>
           </div>
@@ -620,10 +647,10 @@ h2{font-size:clamp(29px,3.8vw,50px);line-height:1.03;max-width:21ch;text-wrap:ba
 
         <div class="contacts">
           <span class="tag">Круглосуточно, 7 дней в неделю</span>
-          <!-- TODO 2/6 · телефон -->
+          <!-- TODO-2 · телефон в контактах: номер + href="tel:" -->
           <a class="contacts__phone" href="#f">+7 (___) ___-__-__</a>
           <dl>
-            <dt>Почта</dt><dd><!-- TODO 3/6 -->info@—.ru</dd>
+            <dt>Почта</dt><dd><!-- TODO-3 -->info@—.ru</dd>
             <dt>Регион</dt><dd>Москва и Московская область</dd>
             <dt>Выезд</dt><dd>В течение 24 часов после заявки</dd>
             <dt>Мобилизация</dt><dd>Бригада на объекте через 24–48 часов</dd>
@@ -638,38 +665,42 @@ h2{font-size:clamp(29px,3.8vw,50px);line-height:1.03;max-width:21ch;text-wrap:ba
 <footer class="stamp">
   <div class="wrap">
     <div class="stamp__grid">
-      <div class="stamp__cell"><span class="tag">Организация</span><b><!-- TODO 4/6 -->ООО «———»</b></div>
-      <div class="stamp__cell"><span class="tag">Телефон</span><b><!-- TODO 5/6 -->+7 (___) ___-__-__</b></div>
-      <div class="stamp__cell"><span class="tag">Почта</span><b>info@—.ru</b></div>
-      <div class="stamp__cell"><span class="tag">ИНН / ОГРН</span><b><!-- TODO 6/6 -->— / —</b></div>
+      <div class="stamp__cell"><span class="tag">Организация</span><b><!-- TODO-6 -->ООО «———»</b></div>
+      <div class="stamp__cell"><span class="tag">Телефон</span><b><!-- TODO-5 -->+7 (___) ___-__-__</b></div>
+      <div class="stamp__cell"><span class="tag">Почта</span><b><!-- TODO-7 -->info@—.ru</b></div>
+      <div class="stamp__cell"><span class="tag">ИНН / ОГРН</span><b><!-- TODO-8 -->— / —</b></div>
       <div class="stamp__cell"><span class="tag">Регион работ</span><b>Москва и область</b></div>
       <div class="stamp__cell"><span class="tag">Режим</span><b>24/7, включая выходные</b></div>
     </div>
     <div class="stamp__foot">
       <span>© 2026 Монолитная скорая помощь. Не является публичной офертой.</span>
-      <a href="#">Политика обработки персональных данных</a>
+      <a href="#"><!-- TODO-10 -->Политика обработки персональных данных</a>
     </div>
   </div>
 </footer>
 
 <nav class="callbar" aria-label="Быстрая связь">
   <a href="#zayavka">Описать задачу</a>
+  <!-- TODO-11 · сейчас обе кнопки ведут в форму; вторую перевести на href="tel:+7XXXXXXXXXX" -->
   <a href="#zayavka">Позвонить</a>
 </nav>
 
 <script>
 /* Единственный скрипт на странице — отправка формы.
-   Бэкенда пока нет: показываем экран «принято» и пишем данные в консоль. */
+   Бэкенда пока нет: показываем экран «принято».
+   Содержимое заявки в консоль НЕ пишем — это персональные данные. */
 (function(){
   var f = document.getElementById('f');
   if (!f) return;
   f.addEventListener('submit', function(e){
     e.preventDefault();
     if (!f.checkValidity()) { f.reportValidity(); return; }
-    console.warn('Форма не подключена к бэкенду. Данные заявки:', Object.fromEntries(new FormData(f)));
     var box = document.getElementById('zayavka');
+    var ok = box.querySelector('.ok');
     box.classList.add('is-sent');
-    box.querySelector('.ok').scrollIntoView({block:'center', behavior:'smooth'});
+    var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    ok.scrollIntoView({block:'center', behavior: calm ? 'auto' : 'smooth'});
+    ok.focus();          // кнопка уехала в display:none — без этого фокус падает в <body>
   });
 })();
 </script>
@@ -680,6 +711,7 @@ h2{font-size:clamp(29px,3.8vw,50px);line-height:1.03;max-width:21ch;text-wrap:ba
   "@type":"GeneralContractor",
   "name":"Монолитная скорая помощь",
   "description":"Бригада монолитчиков с прорабом-инженером: срочное бетонирование, аварийное усиление конструкций, устранение дефектов монолита. Выезд за 24 часа.",
+  "url":"https://dungeonmaster337.github.io/monolit-skoraya/",
   "areaServed":{"@type":"AdministrativeArea","name":"Москва и Московская область"},
   "openingHoursSpecification":{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],"opens":"00:00","closes":"23:59"}
 }
